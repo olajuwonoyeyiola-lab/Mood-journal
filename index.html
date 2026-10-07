@@ -1,53 +1,159 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mood Journal</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLOW UP - 75 Day Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,sans-serif;background:#f8fafc;padding:12px}
-.card{background:white;padding:16px;border-radius:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
-.btn{padding:10px 16px;background:#2B4EFF;color:white;border:0;border-radius:8px;cursor:pointer;width:100%}
-.btn2{padding:8px 12px;background:white;border:1px solid #ddd;border-radius:8px;cursor:pointer}
-.mood{padding:10px;border-radius:8px;border:1px solid #ddd;background:white;cursor:pointer;text-align:center;min-width:65px}
-.chip{padding:6px 10px;border-radius:20px;border:1px solid #ddd;display:inline-block;margin:3px;cursor:pointer;font-size:13px}
-.chip.on{background:#2B4EFF;color:white}
-.mood.on{border:2px solid #2B4EFF;background:#eef2ff}
-</style></head><body>
-<div id="app" style="max-width:600px;margin:0 auto"></div>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0b;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden}
+h1,h2,.syne{font-family:'Syne',sans-serif}
+.bg-glow{position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 20%, #ff3b8d33 0%, transparent 50%), radial-gradient(circle at 80% 80%, #7c3aed33 0%, transparent 50%), radial-gradient(circle at 50% 50%, #f59e0b22 0%, transparent 60%);pointer-events:none;z-index:0}
+.container{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:20px 16px 100px}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.logo{font-size:28px;font-weight:800;letter-spacing:-1px}.logo span{background:linear-gradient(90deg,#ff3b8d,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.level-badge{background:#1a1a1d;border:1px solid #2a2a2e;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+.streak-card{background:linear-gradient(135deg,#1a1a1d 0%, #151517 100%);border:1px solid #2a2a2e;border-radius:24px;padding:20px;margin-bottom:20px}
+.streak-top{display:flex;justify-content:space-between;align-items:flex-start}
+.streak-num{font-size:56px;font-weight:800;line-height:0.9;letter-spacing:-3px}.streak-num span{font-size:18px;letter-spacing:0}
+.tasks{display:grid;gap:12px;margin-bottom:20px}
+.task{background:#141416;border:1px solid #222227;border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.task.done{background:#1a1a1d;border-color:#ff3b8d55}
+.task.done .check{background:#ff3b8d;border-color:#ff3b8d}
+.task-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.check{width:26px;height:26px;border-radius:50%;border:2px solid #333;display:flex;align-items:center;justify-content:center;margin-left:auto}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.photo-card{background:#141416;border:1px dashed #333;border-radius:18px;aspect-ratio:1;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.photo-card img{width:100%;height:100%;object-fit:cover}
+.photo-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, #000a);padding:12px 10px 8px;font-size:11px;font-weight:700;letter-spacing:1px}
+.xp-bar{height:8px;background:#1a1a1d;border-radius:10px;overflow:hidden;margin-top:8px}
+.xp-fill{height:100%;background:linear-gradient(90deg,#ff3b8d,#7c3aed);width:0%;transition:width .6s ease}
+.btn-main{width:100%;background:#fff;color:#000;border:none;padding:18px;border-radius:18px;font-weight:800;font-size:16px;cursor:pointer;font-family:'Syne',sans-serif}
+.btn-ghost{width:100%;background:#1a1a1d;border:1px solid #2a2a2e;color:#fff;padding:16px;border-radius:18px;font-weight:700;margin-top:10px;cursor:pointer}
+.quote-card{background:linear-gradient(135deg,#ff3b8d11,#7c3aed11);border:1px solid #ffffff11;border-radius:20px;padding:18px;margin-bottom:20px;text-align:center;font-style:italic;font-size:14px}
+.modal{position:fixed;inset:0;background:#000d;display:none;align-items:center;justify-content:center;z-index:99;padding:20px}
+.modal.show{display:flex}
+.modal-box{background:#121214;border:1px solid #2a2a2e;border-radius:24px;padding:28px;max-width:360px;width:100%;text-align:center}
+input{width:100%;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:14px;padding:16px;color:#fff;font-size:16px;margin:14px 0;outline:none}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="container">
+<div class="header">
+<div class="logo syne">GLOW<span>UP</span></div>
+<div class="level-badge">🔥 LVL <span id="lvl">1</span> • <span id="xpText">0 XP</span></div>
+</div>
+<div class="streak-card">
+<div class="streak-top">
+<div>
+<div style="font-size:12px;letter-spacing:2px;opacity:.5;font-weight:700">STREAK</div>
+<div class="streak-num syne" id="streakNum">0<span> DAYS</span></div>
+<div style="margin-top:8px;font-size:13px;opacity:.6">Keep going, you’re glowing ✨</div>
+<div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
+</div>
+<div style="text-align:center"><div style="font-size:50px">🔥</div><div style="font-size:12px;opacity:.5" id="percent">0%</div></div>
+</div>
+</div>
+<div class="quote-card" id="quote">“You’re not behind. You’re in your glow-up era.”</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<h2 class="syne" style="font-size:18px">TODAY'S RITUALS</h2>
+<span style="font-size:12px;opacity:.5" id="dateNow"></span>
+</div>
+<div class="tasks" id="tasks"></div>
+<div class="photo-grid">
+<div class="photo-card" onclick="document.getElementById('fileDay1').click()">
+<input type="file" id="fileDay1" hidden accept="image/*" onchange="loadImg(this,'img1')">
+<div id="img1PH" style="text-align:center;opacity:.5"><div style="font-size:28px">📸</div><div style="font-size:11px;font-weight:700;margin-top:6px">DAY 1</div></div>
+<img id="img1" style="display:none"><div class="photo-label">BEFORE</div>
+</div>
+<div class="photo-card" onclick="document.getElementById('fileNow').click()">
+<input type="file" id="fileNow" hidden accept="image/*" onchange="loadImg(this,'img2')">
+<div id="img2PH" style="text-align:center;opacity:.5"><div style="font-size:28px">✨</div><div style="font-size:11px;font-weight:700;margin-top:6px">TODAY</div></div>
+<img id="img2" style="display:none"><div class="photo-label">NOW</div>
+</div>
+</div>
+<button class="btn-main" onclick="shareGlow()">SHARE MY GLOW-UP →</button>
+<button class="btn-ghost" onclick="resetAll()">Reset</button>
+<div style="text-align:center;margin-top:20px;font-size:11px;opacity:.3">BUILT BY JOSEPH • 75 DAY CHALLENGE</div>
+</div>
+<div class="modal" id="payModal">
+<div class="modal-box">
+<div style="font-size:40px">🔒</div>
+<h2 class="syne" style="margin:10px 0">You’re glowing too fast!</h2>
+<p style="font-size:14px;opacity:.7">7 free days used. Unlock 75-day glow-up for <b>₦5000</b></p>
+<div style="background:#0a0a0b;border-radius:14px;padding:12px;margin:14px 0;text-align:left;font-size:13px">
+<div>Opay: <b>8107738572</b> - Oyewole Olaju</div>
+</div>
+<input id="codeInput" placeholder="Enter unlock code">
+<button class="btn-main" onclick="unlock()">UNLOCK FOREVER</button>
+<button class="btn-ghost" onclick="openWA()">Chat on WhatsApp to Pay</button>
+<div style="margin-top:10px;font-size:12px;opacity:.5">Code: GLOW5000</div>
+</div>
+</div>
 <script>
-const MOODS=[{v:1,e:'😭',l:'Awful'},{v:2,e:'😔',l:'Bad'},{v:3,e:'😐',l:'Okay'},{v:4,e:'😊',l:'Good'},{v:5,e:'🤩',l:'Great'}];
-const ACTS=['work','exercise','sleep','study','social','relaxation','food','home','other'];
-let selMood=3, selActs=[], entries=JSON.parse(localStorage.getItem('moods')||'[]'), isPremium=localStorage.getItem('premium')==='yes', limit=10;
-function save(){localStorage.setItem('moods',JSON.stringify(entries));}
-function render(){
-  const canAdd = isPremium || entries.length < limit;
-  document.getElementById('app').innerHTML=`
-  <h2>Mood Journal ${isPremium?'<span style=background:#22c55e;color:white;padding:2px 8px;border-radius:10px;font-size:12px>PREMIUM</span>':''}</h2>
-  <p>Entries: ${entries.length}/${isPremium?'∞':limit}</p>
-  ${canAdd?`<div class=card>
-  <h3>How are you feeling?</h3>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0">${MOODS.map(m=>`<div class="mood ${selMood===m.v?'on':''}" onclick="selMood=${m.v};render()">${m.e}<br><small>${m.l}</small></div>`).join('')}</div>
-  <input id="d" type="date" value="${new Date().toISOString().slice(0,10)}">
-  <input id="t" type="time" value="${new Date().toTimeString().slice(0,5)}">
-  <textarea id="note" placeholder="Write your mood note..."></textarea>
-  <div>${ACTS.map(a=>`<span class="chip ${selActs.includes(a)?'on':''}" onclick="toggle('${a}')">${a}</span>`).join('')}</div>
-  <button class=btn onclick="add()">Save Mood</button>
-  </div>`:`<div class=card style="border:2px solid #f59e0b"><h3>Free limit reached (10/10)</h3>
-  <p>To continue, pay <b>₦5000</b></p>
-  <p><b>Opay:</b> 8107738572<br><b>Name:</b> olajuwon oyeyiola<br><b>WhatsApp:</b> 08107738572</p>
-  <input id="code" placeholder="Enter unlock code (after payment)">
-  <button class=btn onclick="unlock()">Unlock Premium</button>
-  <p style="font-size:12px;color:#666;margin-top:8px">Admin code: ADMIN2025 — or after user pays, tell them code: MOOD5000</p>
-  </div>`}
-  <h3>Your Entries</h3>
-  ${entries.slice().reverse().map((en,i)=>`<div class=card style="display:flex;justify-content:space-between"><div><b>${MOODS.find(m=>m.v===en.mood)?.e} ${en.date} ${en.time}</b><div>${en.note}</div><small>${(en.acts||[]).join(', ')}</small></div><button class=btn2 onclick="del(${entries.length-1-i})">X</button></div>`).join('')||'<p>No entries yet</p>'}
-  `;
+const TASKS_DATA=[
+{id:'water',icon:'💧',label:'2L Water',xp:10,color:'#3b82f622'},
+{id:'skincare',icon:'🧴',label:'Skincare Routine',xp:15,color:'#ff3b8d22'},
+{id:'workout',icon:'🏋️',label:'30min Workout / Walk',xp:20,color:'#7c3aed22'},
+{id:'sleep',icon:'😴',label:'Sleep before 11pm',xp:10,color:'#06b6d422'},
+{id:'affirm',icon:'🪞',label:'Mirror Affirmation',xp:15,color:'#f59e0b22'},
+{id:'nofap',icon:'🔥',label:'No Junk Food',xp:15,color:'#ef444422'},
+]
+let state=JSON.parse(localStorage.getItem('glow_v2')||'null')||{streak:0,xp:0,level:1,done:{},date:null,unlocked:false,freeUsed:0,imgs:{}}
+const quotes=["You’re not ugly, you’re just not glowing yet.","Your glow-up will be someone’s regret.","Discipline is the new sexy.","Small habits, big glow."]
+function init(){
+document.getElementById('dateNow').innerText=new Date().toLocaleDateString('en-NG',{weekday:'short',day:'numeric',month:'short'})
+document.getElementById('quote').innerText='“'+quotes[Math.floor(Math.random()*quotes.length)]+'”'
+if(state.date!==new Date().toDateString()){state.done={};state.date=new Date().toDateString()}
+renderTasks();renderStats()
+if(state.imgs.img1){document.getElementById('img1').src=state.imgs.img1;document.getElementById('img1').style.display='block';document.getElementById('img1PH').style.display='none'}
+if(state.imgs.img2){document.getElementById('img2').src=state.imgs.img2;document.getElementById('img2').style.display='block';document.getElementById('img2PH').style.display='none'}
+checkPaywall()
 }
-function toggle(a){ selActs=selActs.includes(a)?selActs.filter(x=>x!==a):[...selActs,a]; render(); }
-function add(){
-  const d=document.getElementById('d').value, t=document.getElementById('t').value, n=document.getElementById('note').value;
-  entries.push({mood:selMood,date:d,time:t,note:n,acts:selActs}); save(); selActs=[]; render();
+function renderTasks(){
+const c=document.getElementById('tasks');c.innerHTML=''
+TASKS_DATA.forEach(t=>{
+const done=state.done[t.id]
+const d=document.createElement('div');d.className='task'+(done?' done':'')
+d.innerHTML=`<div class="task-icon" style="background:${t.color}">${t.icon}</div><div><div style="font-weight:700;font-size:14px">${t.label}</div><div style="font-size:11px;opacity:.5">+${t.xp} XP</div></div><div class="check">${done?'✓':''}</div>`
+d.onclick=()=>toggle(t)
+c.appendChild(d)
+})
 }
-function del(i){ entries.splice(i,1); save(); render(); }
-function unlock(){ const c=document.getElementById('code').value; if(c==='MOOD5000'||c==='ADMIN2025'){ localStorage.setItem('premium','yes'); isPremium=true; render(); alert('Premium Unlocked!'); } else alert('Wrong code'); }
-render();
-</script></body></html>
+function toggle(t){
+if(!state.unlocked && state.freeUsed>=7 && !state.done[t.id]){document.getElementById('payModal').classList.add('show');return}
+if(state.done[t.id]){state.xp-=t.xp;state.done[t.id]=false}else{state.done[t.id]=true;state.xp+=t.xp}
+if(Object.values(state.done).filter(Boolean).length===TASKS_DATA.length){state.streak++;state.freeUsed++}
+save();renderStats();renderTasks()
+}
+function renderStats(){
+document.getElementById('streakNum').innerHTML=state.streak+'<span> DAYS</span>'
+state.level=Math.floor(state.xp/100)+1
+document.getElementById('lvl').innerText=state.level
+document.getElementById('xpText').innerText=state.xp+' XP'
+const pct=Math.min(100,Math.round((Object.values(state.done).filter(Boolean).length/TASKS_DATA.length)*100))
+document.getElementById('percent').innerText=pct+'%'
+document.getElementById('xpFill').style.width=(state.xp%100)+'%'
+}
+function save(){localStorage.setItem('glow_v2',JSON.stringify(state))}
+function loadImg(inp,id){
+const r=new FileReader();r.onload=e=>{document.getElementById(id).src=e.target.result;document.getElementById(id).style.display='block';document.getElementById(id+'PH').style.display='none';state.imgs[id]=e.target.result;save()}
+r.readAsDataURL(inp.files[0])
+}
+function checkPaywall(){if(!state.unlocked && state.freeUsed>=7)document.getElementById('payModal').classList.add('show')}
+function unlock(){
+if(document.getElementById('codeInput').value.trim().toUpperCase()==='GLOW5000'||document.getElementById('codeInput').value.trim()==='MOOD5000'){state.unlocked=true;save();document.getElementById('payModal').classList.remove('show');alert('Unlocked!')}
+else alert('Invalid code')
+}
+function openWA(){window.open('https://wa.me/2348107738572?text=Hi%20I%20want%20to%20pay%20for%20Glow%20Up%20app','_blank')}
+function shareGlow(){
+const txt=`🔥 Day ${state.streak} of my Glow-Up Challenge - ${Object.values(state.done).filter(Boolean).length}/6 done today ✨ https://mood-journal4.vercel.app/`
+if(navigator.share)navigator.share({text:txt});else{navigator.clipboard.writeText(txt);alert('Copied for WhatsApp status!')}
+}
+function resetAll(){if(confirm('Reset?')){localStorage.removeItem('glow_v2');location.reload()}}
+init()
+</script>
+</body>
+</html>
